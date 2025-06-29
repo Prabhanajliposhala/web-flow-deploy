@@ -30,7 +30,13 @@ const PipelineDashboard = () => {
     { id: '9', name: 'Deploy to Production', status: 'pending' },
   ]);
 
+  useEffect(() => {
+    console.log('PipelineDashboard component mounted');
+    console.log('Pipeline running state:', pipelineRunning);
+  }, []);
+
   const runPipeline = () => {
+    console.log('Run Pipeline button clicked!');
     if (pipelineRunning) return;
     
     setPipelineRunning(true);
@@ -79,35 +85,46 @@ const PipelineDashboard = () => {
   };
 
   const resetPipeline = () => {
+    console.log('Reset Pipeline button clicked!');
     setPipelineRunning(false);
     setStages(stages.map(stage => ({ ...stage, status: 'pending' as const, startTime: undefined, duration: undefined })));
   };
 
+  console.log('Rendering PipelineDashboard, pipelineRunning:', pipelineRunning);
+
   return (
     <div className="space-y-6">
-      <Card className="p-6">
-        <div className="flex items-center justify-between mb-4">
+      <Card className="p-6 border-2 border-blue-200">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-6 gap-4">
           <div>
             <h2 className="text-2xl font-bold text-slate-800">Pipeline Status</h2>
             <p className="text-slate-600">Web App Deployment Pipeline</p>
           </div>
-          <div className="flex space-x-2">
+          <div className="flex flex-col sm:flex-row gap-3">
             <Button 
               onClick={runPipeline}
               disabled={pipelineRunning}
-              className="bg-green-600 hover:bg-green-700"
+              className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 text-lg shadow-lg"
+              size="lg"
             >
               {pipelineRunning ? (
-                <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                <>
+                  <RefreshCw className="h-5 w-5 mr-2 animate-spin" />
+                  Running Pipeline...
+                </>
               ) : (
-                <Play className="h-4 w-4 mr-2" />
+                <>
+                  <Play className="h-5 w-5 mr-2" />
+                  🚀 Run Pipeline
+                </>
               )}
-              {pipelineRunning ? 'Running...' : 'Run Pipeline'}
             </Button>
             <Button 
               onClick={resetPipeline}
               variant="outline"
               disabled={pipelineRunning}
+              className="font-semibold py-3 px-6"
+              size="lg"
             >
               Reset
             </Button>

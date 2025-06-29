@@ -66,7 +66,7 @@ jobs:
     - name: Build Docker image
       run: |
         docker build -t webapp:latest .
-        docker tag webapp:latest webapp:${{ github.sha }}
+        docker tag webapp:latest webapp:\${{ github.sha }}
 
   deploy:
     needs: build
